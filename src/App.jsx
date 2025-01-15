@@ -1,13 +1,16 @@
 import Navbar from "./components/navbar/Navbar";
 import HomePage from "./routes/homePage/homePage";
 import ListPage from "./routes/listPage/listPage";
-import Layout from "./routes/layout/layout";
+import Layout, { RequireAuth } from "./routes/layout/layout";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // Correct imports
 import SinglePage from "./routes/singlePage/SinglePage";
 import Login from "./routes/login/Login";
 import ProfilePage from "./routes/profilePage/ProfilePage";
 import Register from "./routes/register/Register";
+import ProfileUpdatePage from "./routes/profileUpdatePage/ProfileUpdatePage";
+import NewPostPage from "./routes/newPostPage/NewPostPage";
+import { singlePageLoader, listPageLoader } from "./lib/loaders";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,7 +24,8 @@ function App() {
         },
         {
           path: "/list",
-          element: <ListPage/>
+          element: <ListPage/>,
+          loader: listPageLoader
         },
         {
           path: "/login",
@@ -33,15 +37,31 @@ function App() {
         },
         {
           path: "/:id",
-          element: <SinglePage/>
+          element: <SinglePage/>,
+          loader: singlePageLoader
         },
-        {
-          path: "/profile",
-          element: <ProfilePage/>
-        }
+
         
       ]
     },
+    {
+      path: "/",
+      element: <RequireAuth />,
+      children:[
+        {
+          path: "/profile",
+          element: <ProfilePage/>
+        },
+        {
+          path: "/profile/update",
+          element: <ProfileUpdatePage/>
+        },
+        {
+          path: "/add",
+          element: <NewPostPage/>
+        },
+      ]
+    }
 
   ]);
 
