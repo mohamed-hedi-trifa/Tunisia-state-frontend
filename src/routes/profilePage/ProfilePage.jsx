@@ -2,11 +2,16 @@ import Chat from '../../components/chat/chat'
 import List from '../../components/list/List'
 import './profilePage.scss'
 import apiRequest from "../../lib/apiRequest";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 function ProfilePage() {
+
+    const posts = useLoaderData()
+
+
+    
 
     const { updateUser, currentUser } = useContext(AuthContext)
 

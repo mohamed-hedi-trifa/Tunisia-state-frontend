@@ -3,11 +3,30 @@ import Mapp from '../../components/map/Map'
 import { singlePostData, userData } from '../../lib/dummydata'
 import './singlePage.scss';
 // 2:75
-import {useLoaderData} from "react-router-dom" 
+import {redirect, useLoaderData} from "react-router-dom" 
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import apiRequest from '../../lib/apiRequest';
 
 function SinglePage() {
   const post = useLoaderData()
-  console.log(post)
+  const [saved, setSaved] = useState(post.isSaved)
+  const {currentUser} = useContext(AuthContext)
+  const handleSave = async () => {
+    setSaved(prev => !prev);       //setSaved(!saved);
+    if (!currentUser)
+    {
+      redirect("/login")
+    }
+    try {
+      await apiRequest.post("users/save", {postId: post.id})
+    } catch (err) {
+      console.log(err)
+      setSaved(prev => !prev);       //setSaved(!saved);
+    }
+  }
+
+
   return (
     <div className="singlePage">
       <div className="details">
@@ -132,9 +151,11 @@ function SinglePage() {
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
-            <button>
+            <button onClick={handleSave} style={{
+                backgroundColor: saved ? "#fece51" :  'white'
+              }}>
               <img src="/save.png" alt="" />
-              Save the Place
+              {saved ? "Place Saved" : "Save the place"}
             </button>
           </div>
         </div>

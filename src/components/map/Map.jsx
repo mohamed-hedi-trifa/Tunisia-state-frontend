@@ -8,6 +8,7 @@ import Pin from '../pin/Pin'
 
 function Map({ items }) {
   const position = [51.505, -0.09]
+
   return (
    
       <MapContainer center={items.length === 1 ? [items[0].latitude, items[0].longitude] :position  } zoom={7} scrollWheelZoom={false} className="map">
@@ -16,6 +17,7 @@ function Map({ items }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {items.map(item => (
+          
           <Pin item={item} key={item.id} />
         ))}
       </MapContainer>
